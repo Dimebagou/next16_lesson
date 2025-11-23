@@ -146,7 +146,7 @@ function normalizeDate(dateStr: string): string {
 
 function normalizeTime(timeStr: string): string {
     // Handle various time formats and convert to HH:MM (24-hour)
-    const timeRegex = /^(\d{1,2}:\d{2})\s*(AM|PM)?$/i;
+    const timeRegex = /^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i;
     const match = timeStr.trim().match(timeRegex);
 
     if (!match) {
@@ -157,16 +157,11 @@ function normalizeTime(timeStr: string): string {
 
     let hours = parseInt(match[1]);
     const minutes = match[2];
-    const period = match[4]?.toUpperCase();
+    const period = match[3]?.toUpperCase();
 
     if (period) {
-        // Convert to 24-hour format
-        if (period === "PM" && hours !== 12) {
-            hours += 12;
-        }
-        if (period === "AM" && hours === 12) {
-            hours = 0;
-        }
+        if (period === "PM" && hours !== 12) hours += 12;
+        if (period === "AM" && hours === 12) hours = 0;
     }
 
     if (

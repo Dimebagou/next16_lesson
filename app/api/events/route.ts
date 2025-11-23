@@ -91,23 +91,3 @@ export async function GET() {
         );
     }
 }
-
-// a route that accepts a slug as input -> returns the event details
-export async function GETEventBySlug(req: NextRequest, slug: string) {
-    try {
-        await connectDB();
-        const event = await Event.findOne({ slug });
-        return NextResponse.json(
-            { message: "Event fetched successfully", event },
-            { status: 200 }
-        );
-    } catch (e) {
-        return NextResponse.json(
-            {
-                message: "Event fetching failed",
-                error: e,
-            },
-            { status: 500 }
-        );
-    }
-}
