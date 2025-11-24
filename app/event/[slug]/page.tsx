@@ -2,6 +2,7 @@ import BookEvent from "@/components/BookEvent";
 import EventCard from "@/components/EventCard";
 import { IEvent } from "@/database";
 import { getSimilarEventsBySlug } from "@/lib/actions/event.action";
+import { cacheLife } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -54,10 +55,13 @@ const EventDetailsPage = async ({
 }: {
     params: Promise<{ slug: string }>;
 }) => {
+    "use cache";
+    cacheLife("hours");
     const { slug } = await params;
     const req = await fetch(`${BASE_URL}/api/events/${slug}`);
     const {
         event: {
+            _id,
             description,
             image,
             overview,
@@ -156,7 +160,7 @@ const EventDetailsPage = async ({
                             </p>
                         )}
 
-                        <BookEvent />
+                        <BookEvent eventId={_id} slug={slug} />
                     </div>
                 </aside>
             </div>
